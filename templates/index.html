@@ -3,53 +3,104 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PDF Merger</title>
+  <title>PDF Merger & HEIC Converter</title>
   <link rel="stylesheet" href="/static/style.css">
   <link rel="stylesheet" href="/static/legal.css">
 </head>
 <body data-local-mode="{{ local_mode | lower }}">
 <div class="card">
-  <h1>PDF Zusammenführen</h1>
-  <p class="subtitle">PDFs hinzufügen, Reihenfolge festlegen, zusammenführen und komprimieren.</p>
 
-  <div class="drop-zone" id="dz">
-    <div class="drop-icon">📄</div>
-    <p class="drop-text">PDFs hier ablegen<br>oder <b id="pickBtn">Dateien auswählen</b></p>
-    <input type="file" id="fi" accept=".pdf" multiple>
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="pdf">PDF Zusammenführen</button>
+    <button class="tab-btn" data-tab="heic">HEIC → JPEG</button>
   </div>
 
-  <div class="section" id="listSection" style="display:none">
-    <div class="label" id="listLabel"></div>
-    <div id="listItems"></div>
-  </div>
+  <!-- ── Tab: PDF ─────────────────────────────────────────── -->
+  <div class="tab-content" id="tab-pdf">
+    <p class="subtitle">PDFs hinzufügen, Reihenfolge festlegen, zusammenführen und komprimieren.</p>
 
-  {% if local_mode %}
-  <div class="section" id="outputSection">
-    <div class="label">Ausgabeordner</div>
-    <label class="radio-row">
-      <input type="radio" name="out" value="downloads" checked> Downloads
-    </label>
-    <label class="radio-row">
-      <input type="radio" name="out" value="custom"> Anderer Pfad
-    </label>
-    <div class="custom-path-row" id="customPathRow">
-      <span class="custom-path-text placeholder" id="customPathText">Noch kein Ordner gewählt</span>
-      <button class="pick-btn" id="folderPickBtn" type="button">Auswählen…</button>
+    <div class="drop-zone" id="pdf-dz">
+      <div class="drop-icon">📄</div>
+      <p class="drop-text">PDFs hier ablegen<br>oder <b id="pdf-pickBtn">Dateien auswählen</b></p>
+      <input type="file" id="pdf-fi" accept=".pdf" multiple>
     </div>
-  </div>
-  {% endif %}
 
-  <div class="section">
-    <div class="label">Dateiname</div>
-    <div class="filename-row">
-      <input type="text" id="fname" value="Zusammengeführt">
-      <span class="ext">.pdf</span>
+    <div class="section" id="pdf-listSection" style="display:none">
+      <div class="label" id="pdf-listLabel"></div>
+      <div id="pdf-listItems"></div>
     </div>
+
+    {% if local_mode %}
+    <div class="section">
+      <div class="label">Ausgabeordner</div>
+      <label class="radio-row">
+        <input type="radio" name="pdf-out" value="downloads" checked> Downloads
+      </label>
+      <label class="radio-row">
+        <input type="radio" name="pdf-out" value="custom"> Anderer Pfad
+      </label>
+      <div class="custom-path-row" id="pdf-customPathRow">
+        <span class="custom-path-text placeholder" id="pdf-customPathText">Noch kein Ordner gewählt</span>
+        <button class="pick-btn" id="pdf-folderPickBtn" type="button">Auswählen…</button>
+      </div>
+    </div>
+    {% endif %}
+
+    <div class="section">
+      <div class="label">Dateiname</div>
+      <div class="filename-row">
+        <input type="text" id="pdf-fname" value="Zusammengeführt">
+        <span class="ext">.pdf</span>
+      </div>
+    </div>
+
+    <button class="btn" id="pdf-mergeBtn">Zusammenführen &amp; Komprimieren</button>
+    <div id="pdf-result"></div>
   </div>
 
-  <button class="btn" id="mergeBtn">Zusammenführen &amp; Komprimieren</button>
+  <!-- ── Tab: HEIC ─────────────────────────────────────────── -->
+  <div class="tab-content" id="tab-heic" style="display:none">
+    <p class="subtitle">HEIC-Dateien (iPhone) per Drag &amp; Drop zu JPEG konvertieren.</p>
 
-  <div id="result"></div>
+    <div class="drop-zone" id="heic-dz">
+      <div class="drop-icon">🖼️</div>
+      <p class="drop-text">HEIC-Dateien hier ablegen<br>oder <b id="heic-pickBtn">Dateien auswählen</b></p>
+      <input type="file" id="heic-fi" accept=".heic,.heif,.HEIC,.HEIF" multiple>
+    </div>
+
+    <div class="section" id="heic-listSection" style="display:none">
+      <div class="label" id="heic-listLabel"></div>
+      <div id="heic-listItems"></div>
+    </div>
+
+    <div class="section">
+      <div class="label">Qualität</div>
+      <div class="quality-row">
+        <input type="range" id="heic-quality" min="60" max="100" value="85" step="5">
+        <span class="quality-val" id="heic-qualityVal">85 %</span>
+      </div>
+    </div>
+
+    {% if local_mode %}
+    <div class="section">
+      <div class="label">Ausgabeordner</div>
+      <label class="radio-row">
+        <input type="radio" name="heic-out" value="downloads" checked> Downloads
+      </label>
+      <label class="radio-row">
+        <input type="radio" name="heic-out" value="custom"> Anderer Pfad
+      </label>
+      <div class="custom-path-row" id="heic-customPathRow">
+        <span class="custom-path-text placeholder" id="heic-customPathText">Noch kein Ordner gewählt</span>
+        <button class="pick-btn" id="heic-folderPickBtn" type="button">Auswählen…</button>
+      </div>
+    </div>
+    {% endif %}
+
+    <button class="btn" id="heic-convertBtn">Zu JPEG konvertieren</button>
+    <div id="heic-result"></div>
+  </div>
 
   <footer class="footer">
     <a href="/impressum">Impressum</a>
