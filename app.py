@@ -21,6 +21,16 @@ def index():
     return render_template('index.html', local_mode=LOCAL_MODE)
 
 
+@app.route('/impressum')
+def impressum():
+    return render_template('impressum.html')
+
+
+@app.route('/datenschutz')
+def datenschutz():
+    return render_template('datenschutz.html')
+
+
 @app.route('/pick-folder')
 def pick_folder():
     script = 'POSIX path of (choose folder with prompt "Ausgabeordner wählen")'
