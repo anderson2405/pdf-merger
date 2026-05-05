@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF Merger</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body data-local-mode="{{ local_mode | lower }}">
+<div class="card">
+  <h1>PDF Zusammenführen</h1>
+  <p class="subtitle">PDFs hinzufügen, Reihenfolge festlegen, zusammenführen und komprimieren.</p>
+
+  <div class="drop-zone" id="dz">
+    <div class="drop-icon">📄</div>
+    <p class="drop-text">PDFs hier ablegen<br>oder <b id="pickBtn">Dateien auswählen</b></p>
+    <input type="file" id="fi" accept=".pdf" multiple>
+  </div>
+
+  <div class="section" id="listSection" style="display:none">
+    <div class="label" id="listLabel"></div>
+    <div id="listItems"></div>
+  </div>
+
+  {% if local_mode %}
+  <div class="section" id="outputSection">
+    <div class="label">Ausgabeordner</div>
+    <label class="radio-row">
+      <input type="radio" name="out" value="downloads" checked> Downloads
+    </label>
+    <label class="radio-row">
+      <input type="radio" name="out" value="custom"> Anderer Pfad
+    </label>
+    <div class="custom-path-row" id="customPathRow">
+      <span class="custom-path-text placeholder" id="customPathText">Noch kein Ordner gewählt</span>
+      <button class="pick-btn" id="folderPickBtn" type="button">Auswählen…</button>
+    </div>
+  </div>
+  {% endif %}
+
+  <div class="section">
+    <div class="label">Dateiname</div>
+    <div class="filename-row">
+      <input type="text" id="fname" value="Zusammengeführt">
+      <span class="ext">.pdf</span>
+    </div>
+  </div>
+
+  <button class="btn" id="mergeBtn">Zusammenführen &amp; Komprimieren</button>
+
+  <div id="result"></div>
+</div>
+<script src="/static/app.js"></script>
+</body>
+</html>
